@@ -5,11 +5,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        dayContent: '#24292f',
+        dayText: '#24292f',
         nightView: '#22272e',
-        nightAction: '#2d333b',
-        nightContent: '#adbac7',
-        nightGo: '#ec775c',
+        almostDark: '#2d333b',
+        nightText: '#adbac7',
+        nightAction: '#ec775c',
       },
     },
   },

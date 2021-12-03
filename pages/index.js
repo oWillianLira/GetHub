@@ -1,12 +1,32 @@
+import { useState, useLayoutEffect } from 'react';
 import Head from 'next/head';
 
 import Header from '../components/Header';
 import Logo from '../public/gethub.svg';
 
-export default function Home() {
-  const changeMode = () => {
-    document.querySelector('body').classList.toggle('dark');
+export default function Screen() {
+  const [darkMode, setDarkMode] = useState();
+
+  const changeMode = (mode) => {
+    mode
+      ? document.querySelector('body').classList.add('dark')
+      : document.querySelector('body').classList.remove('dark');
+    setDarkMode(mode);
   };
+
+  const toggleMode = () => {
+    setDarkMode();
+    window.localStorage.setItem('dark', !darkMode);
+  };
+
+  useLayoutEffect(() => {
+    if (window.localStorage.getItem('dark') === null) {
+      window.localStorage.setItem('dark', false);
+      setDarkMode(false);
+    } else {
+      changeMode(JSON.parse(window.localStorage.getItem('dark')));
+    }
+  });
 
   return (
     <>
@@ -16,7 +36,7 @@ export default function Home() {
       </Head>
 
       <div className="h-screen bg-gray-50 mode dark:bg-nightView overflow-hidden">
-        <Header logo={Logo} mode={changeMode} />
+        <Header logo={Logo} mode={toggleMode} />
       </div>
     </>
   );
