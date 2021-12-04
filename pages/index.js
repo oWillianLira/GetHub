@@ -1,8 +1,9 @@
-import { useState, useLayoutEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
 
 import Header from '../components/Header';
 import Logo from '../public/gethub.svg';
+import Login from '../components/Login';
 
 export default function Screen() {
   const [darkMode, setDarkMode] = useState();
@@ -19,13 +20,11 @@ export default function Screen() {
     window.localStorage.setItem('dark', !darkMode);
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (window.localStorage.getItem('dark') === null) {
       window.localStorage.setItem('dark', false);
       setDarkMode(false);
-    } else {
-      changeMode(JSON.parse(window.localStorage.getItem('dark')));
-    }
+    } else changeMode(JSON.parse(window.localStorage.getItem('dark')));
   });
 
   return (
@@ -37,6 +36,7 @@ export default function Screen() {
 
       <div className="h-screen bg-gray-50 mode dark:bg-nightView overflow-hidden">
         <Header logo={Logo} mode={toggleMode} />
+        <Login />
       </div>
     </>
   );
