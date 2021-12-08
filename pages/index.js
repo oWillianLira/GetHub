@@ -16,9 +16,16 @@ export default function Main() {
         ? document.querySelector('form#GH-login button#login').setAttribute('disabled', 'true')
         : document.querySelector('form#GH-login button#login').removeAttribute('disabled');
     }
+  }, [username, userData]);
 
-    console.log(userData.name);
-  }, [username]);
+  useEffect(() => {
+    if (window.localStorage.getItem('userData') === null || window.localStorage.getItem('userData') === '') {
+      console.log('no user');
+    } else {
+      console.log('with user');
+      setUserData(JSON.parse(window.localStorage.getItem('userData')));
+    }
+  }, []);
 
   const handleUsername = (e) => {
     if (e.target.type === 'checkbox') {
@@ -37,12 +44,18 @@ export default function Main() {
   };
 
   const login = async (e) => {
-    e.preventDefault();
+    e && e.preventDefault();
 
-    const response = await fetch(baseUrl);
+    const response = await fetch(baseUrl, {
+      method: 'GET',
+      headers: {
+        Authorization: process.env.REACT_APP_GH_TOKEN,
+      },
+    });
     const jsonData = await response.json();
     if (jsonData && jsonData.id) {
       setUserData(jsonData);
+      window.localStorage.setItem('userData', JSON.stringify(jsonData));
       document.querySelector('form#GH-login') &&
         document.querySelector('form#GH-login small#userError').classList.add('hidden');
     } else {
@@ -51,15 +64,21 @@ export default function Main() {
     }
   };
 
+  const logout = () => {
+    setUserData({});
+    window.localStorage.removeItem('userData');
+    setUsername('');
+  };
+
   return (
     <>
       <Head>
-        <title>GetHub</title>
+        <title>GetHub ― {userData.name ? `${userData.name}` : userData.login ? `${userData.login}` : 'Login'}</title>
         <link rel="shortcut icon" href="./gethub.svg" />
       </Head>
 
       <div className="h-screen bg-gray-50 mode dark:bg-nightView overflow-hidden">
-        <Header logo={Logo} user={userData} />
+        <Header logo={Logo} user={userData} logout={logout} />
         {!userData.id && <Login login={login} setUsername={handleUsername} />}
       </div>
     </>

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { DotsVerticalIcon, MoonIcon, SearchIcon, SunIcon } from '@heroicons/react/solid';
 import user_pic from '../public/user_avatar.svg';
 
-export default function Header({ logo, user }) {
+export default function Header({ logo, user, logout }) {
   const [darkMode, setDarkMode] = useState();
 
   const changeMode = (mode) => {
@@ -50,9 +50,15 @@ export default function Header({ logo, user }) {
             <MoonIcon className="text-gray-200 h-4 w-4 dark:hidden" />
             <SunIcon className="text-dayText h-4 w-4 hidden dark:flex" />
           </button>
-          <button className="flex items-center">
+          <button className="flex items-center outline-none" title="Logout" onClick={logout}>
             {user.avatar_url ? (
-              <img width={30} height={30} src={user.avatar_url} className="rounded-full" />
+              <img
+                width={30}
+                height={30}
+                src={`${user.avatar_url}&s=40`}
+                alt={`${user.name}'s avatar`}
+                className="rounded-full"
+              />
             ) : (
               <Image width={30} height={30} layout="fixed" src={user_pic} className="rounded-full" />
             )}
