@@ -1,9 +1,31 @@
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 import { DotsVerticalIcon, MoonIcon, SearchIcon, SunIcon } from '@heroicons/react/solid';
 import user_pic from '../public/user_avatar.svg';
 
-export default function Header({ logo, mode }) {
+export default function Header({ logo, user, logout }) {
+  const [darkMode, setDarkMode] = useState();
+
+  const changeMode = (mode) => {
+    mode
+      ? document.querySelector('body').classList.add('dark')
+      : document.querySelector('body').classList.remove('dark');
+    setDarkMode(mode);
+  };
+
+  const toggleMode = () => {
+    setDarkMode();
+    window.localStorage.setItem('dark', !darkMode);
+  };
+
+  useEffect(() => {
+    if (window.localStorage.getItem('dark') === null) {
+      window.localStorage.setItem('dark', false);
+      setDarkMode(false);
+    } else changeMode(JSON.parse(window.localStorage.getItem('dark')));
+  });
+
   return (
     <header className="p-2 md:py-3 bg-gray-50 border-b-2 border-gray-100 border-solid mode dark:bg-almostDark dark:border-almostDark">
       <div className="2xl:container mx-auto flex items-center justify-between">
@@ -22,14 +44,24 @@ export default function Header({ logo, mode }) {
         <div className="flex items-center space-x-2">
           <button
             title="Change mode"
-            onClick={mode}
+            onClick={toggleMode}
             className="rounded-md w-6 h-6 flex items-center justify-center bg-dayText dark:bg-nightText hover:scale-105 duration-200"
           >
             <MoonIcon className="text-gray-200 h-4 w-4 dark:hidden" />
             <SunIcon className="text-dayText h-4 w-4 hidden dark:flex" />
           </button>
-          <button className="flex items-center">
-            <Image width={30} height={30} layout="fixed" src={user_pic} className="rounded-full" />
+          <button className="flex items-center outline-none" title="Logout" onClick={logout}>
+            {user.avatar_url ? (
+              <img
+                width={30}
+                height={30}
+                src={`${user.avatar_url}&s=40`}
+                alt={`${user.name}'s avatar`}
+                className="rounded-full"
+              />
+            ) : (
+              <Image width={30} height={30} layout="fixed" src={user_pic} className="rounded-full" />
+            )}
             <DotsVerticalIcon className="h-full w-6 text-dayText dark:text-nightText" />
           </button>
         </div>
