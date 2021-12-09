@@ -8,6 +8,7 @@ import Login from '../components/Login';
 export default function Main() {
   const [username, setUsername] = useState('');
   const [userData, setUserData] = useState(Object);
+  const [userMenu, setUserMenu] = useState(false);
   var baseUrl = `https://api.github.com/users/${username}`;
 
   useEffect(() => {
@@ -16,7 +17,7 @@ export default function Main() {
         ? document.querySelector('form#GH-login button#login').setAttribute('disabled', 'true')
         : document.querySelector('form#GH-login button#login').removeAttribute('disabled');
     }
-  }, [username, userData]);
+  }, [username]);
 
   useEffect(() => {
     if (window.localStorage.getItem('userData') === null || window.localStorage.getItem('userData') === '') {
@@ -68,6 +69,7 @@ export default function Main() {
     setUserData({});
     window.localStorage.removeItem('userData');
     setUsername('');
+    setUserMenu(false);
   };
 
   return (
@@ -78,7 +80,7 @@ export default function Main() {
       </Head>
 
       <div className="h-screen bg-gray-50 mode dark:bg-nightView overflow-hidden">
-        <Header logo={Logo} user={userData} logout={logout} />
+        <Header logo={Logo} user={userData} logout={logout} openMenu={setUserMenu} menu={userMenu} />
         {!userData.id && <Login login={login} setUsername={handleUsername} />}
       </div>
     </>
