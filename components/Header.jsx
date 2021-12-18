@@ -32,7 +32,7 @@ export default function Header({ logo, user, menu, openMenu, logout }) {
       <div className="relative 2xl:container mx-auto flex items-center justify-between">
         <a href="/" className="flex items-center space-x-2">
           <Image width={30} height={30} src={logo} layout="fixed" />
-          <h1 className="hidden sm:flex font-semibold text-xl text-dayText dark:text-gray-200">GetHub</h1>
+          <h1 className="hidden sm:flex font-semibold text-xl text-dayText mode dark:text-gray-200">GetHub</h1>
         </a>
         <fieldset className="hidden sm:flex items-center border-b-2 border-gray-100 border-solid mode dark:border-almostDark">
           <SearchIcon className="h-7 w-5 text-gray-400 dark:text-nightText" />
@@ -64,7 +64,7 @@ export default function Header({ logo, user, menu, openMenu, logout }) {
             ) : (
               <Image width={30} height={30} layout="fixed" src={user_pic} className="rounded-full" />
             )}
-            <DotsVerticalIcon className="h-full w-6 text-dayText dark:text-nightText" />
+            <DotsVerticalIcon className="h-full w-6 text-dayText mode dark:text-nightText" />
           </button>
         </div>
         {menu && user.id && <MenuUser user={user} logout={logout} />}

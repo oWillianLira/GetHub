@@ -4,6 +4,7 @@ import Head from 'next/head';
 import Header from '../components/Header';
 import Logo from '../public/gethub.svg';
 import Login from '../components/Login';
+import Overview from '../components/Overview';
 
 export default function Main() {
   const [username, setUsername] = useState('');
@@ -21,9 +22,9 @@ export default function Main() {
 
   useEffect(() => {
     if (window.localStorage.getItem('userData') === null || window.localStorage.getItem('userData') === '') {
-      console.log('no user');
+      // console.log('no user');
     } else {
-      console.log('with user');
+      // console.log('with user');
       setUserData(JSON.parse(window.localStorage.getItem('userData')));
     }
   }, []);
@@ -82,6 +83,7 @@ export default function Main() {
       <div className="h-screen bg-gray-50 mode dark:bg-nightView overflow-hidden">
         <Header logo={Logo} user={userData} logout={logout} openMenu={setUserMenu} menu={userMenu} />
         {!userData.id && <Login login={login} setUsername={handleUsername} />}
+        {userData.id && <Overview user={userData} />}
       </div>
     </>
   );
